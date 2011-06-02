@@ -1,0 +1,4 @@
+Snippet Description
+
+* com.neophi.junit.CaptureArgument
+** Matcher that validates the argument type and stores the matched item
