@@ -25,7 +25,23 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
 /**
- * Matcher that requires the argument to be of a particular type and will save the value it matches.
+ * Matcher that requires the argument to be of a particular type and will save the value it matches. Handy when a factory pattern is too heavy but you
+ * can still assert something about the item. A sample use case would be:
+ * 
+ * <pre>
+ * <code>
+ * final MBeanServer mBeanServer = context.mock(MBeanServer.class);
+ * final Object objectToRegister = new Object();
+ * final CaptureArgument&lt;ObjectName&gt; captureArgument = new CaptureArgument&lt;ObjectName&gt;();
+ * context.checking(new Expectations() {{
+ *     oneOf(mBeanServer).registerMBean(with(same(objectToRegister)), with(captureArgument));
+ * }});
+ * unitUnderTest.doSomething(objectToRegister);
+ * assertEquals("BeanDomain", captureArgument.getArgument().getDomain());
+ * </code>
+ * </pre>
+ * 
+ * In this case the unitUnderTest creates an ObjectName instance that we want to capture and inspect.
  */
 public class CaptureArgument<T> extends BaseMatcher<T>
 {
